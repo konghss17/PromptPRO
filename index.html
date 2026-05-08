@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Locker PRO+ (Ultimate Edition)</title>
+  <style>
+    :root {
+      --primary: #2563eb; --primary-hover: #1d4ed8;
+      --success: #10b981; --success-hover: #059669;
+      --warning: #f59e0b; --warning-hover: #d97706;
+      --danger: #ef4444; --danger-hover: #b91c1c;
+      --dark: #1e293b; --light: #f8fafc;
+      --border: #e2e8f0; --card: #ffffff;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f1f5f9; color: #334155; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    
+    /* Navbar & Tabs */
+    .navbar { background: var(--dark); padding: 10px 20px; display: flex; align-items: center; gap: 10px; overflow-x: auto; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    .brand { color: white; font-weight: bold; font-size: 1.2rem; margin-right: 20px; white-space: nowrap; }
+    .tab { background: #334155; color: #cbd5e1; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: 0.2s; white-space: nowrap; }
+    .tab:hover { background: #475569; color: white; }
+    .tab.active { background: var(--primary); color: white; }
+    .tab-close { background: none; border: none; color: inherit; font-size: 14px; cursor: pointer; opacity: 0.7; }
+    .tab-close:hover { opacity: 1; color: #ffcccc; }
+    .btn-add-tab { background: var(--success); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+    .btn-add-tab:hover { background: var(--success-hover); }
+
+    /* Main Workspace */
+    .workspace { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 20px; padding: 20px; height: calc(100vh - 60px); overflow: hidden; }
+    .panel { background: var(--card); border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; border: 1px solid var(--border); }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+    .panel-header h3 { font-size: 1.1rem; color: var(--dark); }
+    
+    /* Inputs & Buttons */
+    textarea { flex: 1; width: 100%; resize: none; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s; line-height: 1.5; }
+    textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+    input { padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; outline: none; }
+    input:focus { border-color: var(--primary); }
+    button { padding: 8px 14px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; }
+    .btn-blue { background: var(--primary); color: white; } .btn-blue:hover { background: var(--primary-hover); }
+    .btn-green { background: var(--success); color: white; } .btn-green:hover { background: var(--success-hover); }
+    .btn-orange { background: var(--warning); color: white; } .btn-orange:hover { background: var(--warning-hover); }
+    .btn-red { background: var(--danger); color: white; } .btn-red:hover { background: var(--danger-hover); }
+    .btn-gray { background: #e2e8f0; color: #475569; } .btn-gray:hover { background: #cbd5e1; }
+    
+    .row { display: flex; gap: 8px; margin-bottom: 8px; }
+    .toolbar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .info-text { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+    /* Chapter Area */
+    .chapters-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding-right: 4px; }
+    .chapters-container::-webkit-scrollbar { width: 6px; }
+    .chapters-container::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .chapter-card { border: 1px solid var(--border); border-radius: 8px; padding: 12px; background: #f8fafc; }
+    .chapter-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 8px; align-items: center; }
+    .chapter-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .chapter-grid textarea { height: 180px; }
+    .mini-glossary-box { background: #fff8e1; border-color: #fde047; }
+    
+    /* Drag & Drop */
+    .drop-zone { border: 2px dashed #94a3b8; border-radius: 8px; padding: 15px; text-align: center; color: #64748b; background: #f1f5f9; transition: all 0.2s; margin-bottom: 12px; font-size: 14px;}
+    .drop-zone.dragover { background: #e0f2fe; border-color: var(--primary); color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar / Tabs -->
+  <div class="navbar">
+    <div class="brand">🚀 Prompt Locker PRO+</div>
+    <div id="tabsContainer" style="display: flex; gap: 8px;"></div>
+    <button class="btn-add-tab" onclick="app.createNewTab()">➕ เพิ่มเรื่องใหม่</button>
+  </div>
+
+  <!-- Main Workspace -->
+  <div class="workspace" id="mainWorkspace">
+    
+    <!-- Panel 1: Prompt -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>🔒 Prompt Setting</h3>
+      </div>
+      <div class="info-text" style="margin-bottom: 10px;">
+        ใช้ <b>{{MINI_GLOSSARY}}</b> เพื่อวางคำศัพท์เฉพาะตอน<br>
+        ใช้ <b>{{CONTENT}}</b> เพื่อวางเนื้อหา
+      </div>
+      <textarea id="promptBox" placeholder="ใส่ Prompt ของคุณที่นี่..." oninput="app.updateCurrentTab('prompt', this.value)"></textarea>
+      <div class="toolbar">
+        <button class="btn-gray" onclick="app.cleanPrompt()">🧹 Clean Format</button>
+      </div>
+    </div>
+
+    <!-- Panel 2: Main Glossary -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>📚 Main Glossary (คลังศัพท์หลัก)</h3>
+      </div>
+      <div class="row">
+        <input type="text" id="glosTerm" placeholder="คำศัพท์ (จีน/Eng)" style="flex: 1;">
+        <input type="text" id="glosMean" placeholder="คำแปล (ไทย)" style="flex: 1;">
+        <button class="btn-blue" onclick="app.addGlossaryTerm()">➕</button>
+      </div>
+      <textarea id="mainGlossaryBox" placeholder="ตัวอย่าง:\n仙路 = มรรคาอมตะ\n争锋 = ต่อสู้แย่งชิง" oninput="app.updateCurrentTab('glossary', this.value)"></textarea>
+      <div class="toolbar">
+        <button class="btn-gray" onclick="app.sortGlossary()">🔤 Sort A-Z</button>
+      </div>
+    </div>
+
+    <!-- Panel 3: Multi-Chapter Content -->
+    <div class="panel">
+      <div class="panel-header">
+        <h3>📄 เนื้อหา & แปล (Content)</h3>
+        <button class="btn-green" onclick="app.addChapter()">➕ เพิ่มตอนใหม่</button>
+      </div>
+      <div id="dropZone" class="drop-zone">
+        📂 ลากไฟล์ <b>.txt</b> มาวางที่นี่ (ลงได้หลายไฟล์เรียงกัน)
+      </div>
+      
+      <div class="chapters-container" id="chaptersContainer">
+        <!-- Chapter Cards จะถูกสร้างที่นี่ -->
+      </div>
+    </div>
+
+  </div>
+
+<script>
+const DEFAULT_PROMPT = `คุณคือนักแปลนิยายมืออาชีพที่มีประสบการณ์ทำงานกับสำนักพิมพ์ โปรดแปลเนื้อหาต่อไปนี้โดยอ้างอิงวิธีการแปลและสำนวนที่พบในนิยายแปลของสำนักพิมพ์เท่านั้น
+
+[กฎการแปล]
+1. จังหวะประโยคอ่านลื่นเหมือนนิยายที่ตีพิมพ์
+2. ใช้ 'ไม่' แทน 'มิ'
+3. หากเจอคำที่อยู่ใน Glossary ให้แปลตามที่กำหนดไว้เท่านั้น
+4. หน่วยวัดโบราณ: ใช้หน่วยจีน 100% เช่น จิน, ลี้, จ้าง, ฉื่อ, หมู่ (ไม่ใช้หน่วยเมตริก)
+
+[Glossary เฉพาะตอน]
+{{MINI_GLOSSARY}}
+
+[เนื้อหาต้นฉบับ]
+{{CONTENT}}`;
+
+// สถาปัตยกรรมจัดการสถานะ (State Management)
+const app = {
+  data: {
+    activeTabId: null,
+    tabs: []
+  },
+
+  // ================= 1. Core / Init =================
+  init() {
+    const savedData = localStorage.getItem('promptLockerUltimate');
+    if (savedData) {
+      this.data = JSON.parse(savedData);
+    } 
+    
+    // หากไม่มีข้อมูลเลย ให้สร้าง Tab ค่าเริ่มต้น
+    if (!this.data.tabs || this.data.tabs.length === 0) {
+      const initId = this.generateId();
+      this.data.tabs = [{
+        id: initId,
+        name: "มุ่งสู่มรรคาอมตะ",
+        prompt: DEFAULT_PROMPT,
+        glossary: "仙路 = มรรคาอมตะ\n争锋 = ต่อสู้แย่งชิง\n灵气 = ปราณวิญญาณ",
+        chapters: [{ id: this.generateId(), text: "", miniGlossary: "" }]
+      }];
+      this.data.activeTabId = initId;
+    }
+    
+    this.setupDragAndDrop();
+    this.renderAll();
+  },
+
+  save() {
+    localStorage.setItem('promptLockerUltimate', JSON.stringify(this.data));
+  },
+
+  generateId() {
+    return Math.random().toString(36).substr(2, 9);
+  },
+
+  getCurrentTab() {
+    return this.data.tabs.find(t => t.id === this.data.activeTabId) || this.data.tabs[0];
+  },
+
+  // ================= 2. Tab Management =================
+  createNewTab() {
+    const name = prompt("ตั้งชื่อเรื่อง (Project Name):", "เรื่องใหม่");
+    if (!name) return;
+    
+    const newTab = {
+      id: this.generateId(),
+      name: name,
+      prompt: DEFAULT_PROMPT,
+      glossary: "",
+      chapters: [{ id: this.generateId(), text: "", miniGlossary: "" }]
+    };
+    
+    this.data.tabs.push(newTab);
+    this.data.activeTabId = newTab.id;
+    this.save();
+    this.renderAll();
+  },
+
+  switchTab(id) {
+    this.data.activeTabId = id;
+    this.save();
+    this.renderAll();
+  },
+
+  deleteTab(id, event) {
+    event.stopPropagation();
+    if (!confirm("⚠️ ต้องการลบเรื่องนี้และข้อมูลทั้งหมดใช่หรือไม่?")) return;
+    
+    this.data.tabs = this.data.tabs.filter(t => t.id !== id);
+    if (this.data.tabs.length > 0) {
+      this.data.activeTabId = this.data.tabs[0].id;
+    } else {
+      this.createNewTab(); // บังคับสร้างใหม่ถ้าลบหมด
+    }
+    this.save();
+    this.renderAll();
+  },
+
+  updateCurrentTab(field, value) {
+    const tab = this.getCurrentTab();
+    tab[field] = value;
+    this.save();
+  },
+
+  // ================= 3. Glossary & Prompt Utils =================
+  addGlossaryTerm() {
+    const term = document.getElementById('glosTerm').value.trim();
+    const mean = document.getElementById('glosMean').value.trim();
+    if (!term || !mean) return;
+    
+    const tab = this.getCurrentTab();
+    const newEntry = `${term} = ${mean}`;
+    
+    if (tab.glossary.includes(term + " =")) {
+      alert("คำนี้มีอยู่ใน Glossary หลักแล้วครับ");
+      return;
+    }
+    
+    tab.glossary = tab.glossary ? `${tab.glossary}\n${newEntry}` : newEntry;
+    document.getElementById('glosTerm').value = '';
+    document.getElementById('glosMean').value = '';
+    this.save();
+    this.renderWorkspace(); // อัปเดต UI
+  },
+
+  sortGlossary() {
+    const tab = this.getCurrentTab();
+    if (!tab.glossary) return;
+    
+    let lines = tab.glossary.split('\n').map(l => l.trim()).filter(l => l);
+    tab.glossary = [...new Set(lines.sort((a,b) => a.localeCompare(b)))].join('\n');
+    this.save();
+    this.renderWorkspace();
+  },
+
+  cleanPrompt() {
+    const tab = this.getCurrentTab();
+    tab.prompt = tab.prompt.replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+    this.save();
+    this.renderWorkspace();
+  },
+
+  // ================= 4. Chapter Management & Core Logic =================
+  addChapter(text = "") {
+    const tab = this.getCurrentTab();
+    tab.chapters.push({ id: this.generateId(), text: text, miniGlossary: "" });
+    this.save();
+    this.renderChapters();
+    // เลื่อนลงไปล่างสุด
+    setTimeout(() => {
+      const container = document.getElementById('chaptersContainer');
+      container.scrollTop = container.scrollHeight;
+    }, 100);
+  },
+
+  deleteChapter(chapterId) {
+    if(!confirm("ต้องการลบเนื้อหาตอนนี้ใช่หรือไม่?")) return;
+    const tab = this.getCurrentTab();
+    tab.chapters = tab.chapters.filter(c => c.id !== chapterId);
+    if(tab.chapters.length === 0) this.addChapter(); // ห้ามว่างเปล่า
+    this.save();
+    this.renderChapters();
+  },
+
+  updateChapterText(chapterId, text) {
+    const tab = this.getCurrentTab();
+    const chapter = tab.chapters.find(c => c.id === chapterId);
+    if(chapter) {
+      chapter.text = text;
+      this.save();
+    }
+  },
+
+  updateChapterMiniGlossary(chapterId, text) {
+    const tab = this.getCurrentTab();
+    const chapter = tab.chapters.find(c => c.id === chapterId);
+    if(chapter) {
+      chapter.miniGlossary = text;
+      this.save();
+    }
+  },
+
+  // 🚀 Core Feature 1: สแกนคำศัพท์
+  scanGlossary(chapterId) {
+    const tab = this.getCurrentTab();
+    const chapter = tab.chapters.find(c => c.id === chapterId);
+    if(!chapter || !chapter.text.trim() || !tab.glossary) return;
+
+    let foundTerms = [];
+    let lines = tab.glossary.split('\n');
+    
+    lines.forEach(line => {
+      if(!line.trim()) return;
+      let parts = line.split(/=(.+)/); // แยกเฉพาะ = ตัวแรก
+      if(parts.length >= 2) {
+        let term = parts[0].trim();
+        let mean = parts[1].trim();
+        if(term && chapter.text.includes(term)) {
+          foundTerms.push(`${term} = ${mean}`);
+        }
+      }
+    });
+
+    chapter.miniGlossary = foundTerms.length > 0 ? foundTerms.join('\n') : "ไม่พบคำศัพท์เฉพาะในตอนนี้";
+    this.save();
+    this.renderChapters();
+  },
+
+  // 🚀 Core Feature 2: ประกอบร่าง Prompt เพื่อ Copy
+  copyChapter(chapterId, btnElement) {
+    const tab = this.getCurrentTab();
+    const chapter = tab.chapters.find(c => c.id === chapterId);
+    if(!chapter || !chapter.text.trim()) {
+      alert("กรุณาใส่เนื้อหาต้นฉบับก่อนครับ");
+      return;
+    }
+
+    let p = tab.prompt || "";
+    let mg = chapter.miniGlossary || "ไม่มีคำศัพท์เฉพาะในตอนนี้";
+    let c = chapter.text;
+
+    // ทำความสะอาดตัวอักษรซ่อนเร้น
+    p = p.replace(/\u200B/g,'').replace(/\uFEFF/g,'');
+
+    // แทนที่ Placeholder
+    let finalOutput = p
+      .replace(/{{\s*MINI_GLOSSARY\s*}}/gi, mg)
+      .replace(/{{\s*CONTENT\s*}}/gi, c);
+
+    // Fallback กรณีลืมใส่ Placeholder
+    if(!/{{\s*MINI_GLOSSARY\s*}}/i.test(p)) finalOutput += "\n\n[Glossary เฉพาะตอน]\n" + mg;
+    if(!/{{\s*CONTENT\s*}}/i.test(p)) finalOutput += "\n\n[เนื้อหาต้นฉบับ]\n" + c;
+
+    navigator.clipboard.writeText(finalOutput);
+
+    // Effect เปลี่ยนสีปุ่ม
+    const originalText = btnElement.innerHTML;
+    btnElement.innerHTML = "✅ คัดลอกแล้ว!";
+    btnElement.classList.replace('btn-blue', 'btn-green');
+    setTimeout(() => {
+      btnElement.innerHTML = originalText;
+      btnElement.classList.replace('btn-green', 'btn-blue');
+    }, 2000);
+  },
+
+  // ================= 5. Rendering (วาดหน้าจอ) =================
+  renderAll() {
+    this.renderTabs();
+    this.renderWorkspace();
+  },
+
+  renderTabs() {
+    const container = document.getElementById('tabsContainer');
+    container.innerHTML = '';
+    
+    this.data.tabs.forEach(tab => {
+      const isActive = tab.id === this.data.activeTabId ? 'active' : '';
+      container.innerHTML += `
+        <button class="tab ${isActive}" onclick="app.switchTab('${tab.id}')">
+          📚 ${tab.name}
+          <span class="tab-close" onclick="app.deleteTab('${tab.id}', event)">✖</span>
+        </button>
+      `;
+    });
+  },
+
+  renderWorkspace() {
+    const tab = this.getCurrentTab();
+    document.getElementById('promptBox').value = tab.prompt || "";
+    document.getElementById('mainGlossaryBox').value = tab.glossary || "";
+    this.renderChapters();
+  },
+
+  renderChapters() {
+    const tab = this.getCurrentTab();
+    const container = document.getElementById('chaptersContainer');
+    container.innerHTML = '';
+
+    tab.chapters.forEach((chapter, index) => {
+      container.innerHTML += `
+        <div class="chapter-card">
+          <div class="chapter-header">
+            <span>ตอนที่ ${index + 1}</span>
+            <button class="btn-red" style="padding: 4px 8px; font-size: 11px;" onclick="app.deleteChapter('${chapter.id}')">🗑️ ลบ</button>
+          </div>
+          
+          <div class="chapter-grid">
+            <textarea placeholder="วางเนื้อหาจีน/Eng ที่นี่..." oninput="app.updateChapterText('${chapter.id}', this.value)">${chapter.text}</textarea>
+            <textarea class="mini-glossary-box" placeholder="Mini Glossary จะปรากฏที่นี่หลังกดสแกน (สามารถแก้ไขเพิ่มเติมได้)" oninput="app.updateChapterMiniGlossary('${chapter.id}', this.value)">${chapter.miniGlossary}</textarea>
+          </div>
+
+          <div class="toolbar" style="margin-top:0;">
+            <button class="btn-orange" onclick="app.scanGlossary('${chapter.id}')">🔍 1. สแกนคำศัพท์ (สร้าง Mini Glossary)</button>
+            <button class="btn-blue" style="flex:1; justify-content:center;" onclick="app.copyChapter('${chapter.id}', this)">📋 2. คัดลอกทั้งหมด (Prompt + Mini Glossary + เนื้อหา)</button>
+          </div>
+        </div>
+      `;
+    });
+  },
+
+  // ================= 6. Drag & Drop =================
+  setupDragAndDrop() {
+    const dropZone = document.getElementById('dropZone');
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+
+      const files = Array.from(e.dataTransfer.files).filter(file => file.name.endsWith('.txt'));
+      if (files.length === 0) return alert("รองรับเฉพาะไฟล์ .txt เท่านั้นครับ");
+
+      // เรียงไฟล์ตามตัวเลขในชื่อ (เช่น chapter1.txt, chapter2.txt)
+      files.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true}));
+
+      const tab = this.getCurrentTab();
+      
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          // ถ้าช่องแรกว่าง ให้เอาไปแทนที่ช่องแรกก่อน
+          if (tab.chapters.length === 1 && tab.chapters[0].text.trim() === "") {
+            tab.chapters[0].text = event.target.result;
+          } else {
+            tab.chapters.push({ id: this.generateId(), text: event.target.result, miniGlossary: "" });
+          }
+          this.save();
+          this.renderChapters();
+        };
+        reader.readAsText(file, 'UTF-8');
+      });
+    });
+  }
+};
+
+// เริ่มการทำงานเมื่อโหลดหน้าเว็บเสร็จ
+window.onload = () => app.init();
+</script>
+</body>
+</html>
