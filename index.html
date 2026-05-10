@@ -230,10 +230,13 @@ const app = {
     this.renderAll();
   },
 
-  switchTab(id) {
+switchTab(id) {
     this.data.activeTabId = id;
     this.save();
     this.renderAll();
+    
+    // 🚀 เพิ่มบรรทัดนี้: เมื่อสลับ Tab ให้ไปดึงข้อมูลเรื่องนั้นจาก Firebase มาโชว์
+    syncWithFirebase(id); 
   },
 
   deleteTab(id, event) {
@@ -545,21 +548,55 @@ function initFirebaseSync() {
     });
 }
 function saveDataToCloud(field) {
+    // ดึง ID ของเรื่องที่กำลังเปิดอยู่ปัจจุบัน
+    const activeTabId = app.data.activeTabId; 
+    if (!activeTabId) return alert("ไม่พบ ID ของเรื่องที่กำลังแก้ไข");
+
     const value = (field === 'prompt') 
         ? document.getElementById('promptBox').value 
         : document.getElementById('mainGlossaryBox').value;
 
-    // แสดง Loading ที่ปุ่ม
     const btn = event.currentTarget;
     const originalText = btn.innerHTML;
     btn.innerHTML = "⌛ กำลังบันทึก...";
 
-    rtdb.ref(`project_settings/${field}`).set(value)
+    // 🚀 เปลี่ยนกิ่งให้มี ID ของเรื่องนำหน้า
+    rtdb.ref(`projects/${activeTabId}/${field}`).set(value)
         .then(() => {
-            btn.innerHTML = "✅ บันทึกสำเร็จ!";
+            btn.innerHTML = "✅ บันทึกแยกเรื่องสำเร็จ!";
             setTimeout(() => { btn.innerHTML = originalText; }, 2000);
         })
         .catch(err => alert("บันทึกล้มเหลว: " + err.message));
+}
+  // ตัวแปรเก็บ Listener เดิม เพื่อปิดก่อนเปิดอันใหม่ (ป้องกันข้อมูลตีกัน)
+let currentPromptListener = null;
+let currentGlossaryListener = null;
+
+function syncWithFirebase(tabId) {
+    // 1. ปิดการเชื่อมต่อของเรื่องเก่าก่อน (ถ้ามี)
+    if (currentPromptListener) currentPromptListener.off();
+    if (currentGlossaryListener) currentGlossaryListener.off();
+
+    console.log("🔄 กำลังซิงค์ข้อมูลของเรื่อง ID:", tabId);
+
+    // 2. เริ่มดึงข้อมูลของเรื่องใหม่
+    currentPromptListener = rtdb.ref(`projects/${tabId}/prompt`);
+    currentPromptListener.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data && document.activeElement !== document.getElementById('promptBox')) {
+            document.getElementById('promptBox').value = data;
+            app.updateCurrentTab('prompt', data);
+        }
+    });
+
+    currentGlossaryListener = rtdb.ref(`projects/${tabId}/glossary`);
+    currentGlossaryListener.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data && document.activeElement !== document.getElementById('mainGlossaryBox')) {
+            document.getElementById('mainGlossaryBox').value = data;
+            app.updateCurrentTab('glossary', data);
+        }
+    });
 }
 </script>
 <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
