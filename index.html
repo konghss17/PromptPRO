@@ -5,99 +5,98 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prompt Locker PRO+ (Ultimate Edition)</title>
   <style>
-:root {
-  --primary: #3b82f6; --primary-hover: #2563eb;
-  --success: #10b981; --success-hover: #059669;
-  --warning: #f59e0b; --warning-hover: #d97706;
-  --danger: #ef4444; --danger-hover: #dc2626;
-  --dark: #1e293b; --light: #f8fafc;
-  --bg-color: #f1f5f9;
-  --border: #e2e8f0; --card: #ffffff;
-}
+    :root {
+      --primary: #3b82f6; --primary-hover: #2563eb;
+      --success: #10b981; --success-hover: #059669;
+      --warning: #f59e0b; --warning-hover: #d97706;
+      --danger: #ef4444; --danger-hover: #dc2626;
+      --dark: #1e293b; --light: #f8fafc;
+      --bg-color: #f1f5f9;
+      --border: #e2e8f0; --card: #ffffff;
+    }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background-color: var(--bg-color); color: #334155; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-color); color: #334155; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-/* Navbar */
-.navbar { background: var(--dark); padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 50; }
-.brand { color: white; font-weight: bold; font-size: 1.2rem; margin-right: 20px; white-space: nowrap; display: flex; align-items: center; gap: 8px;}
-.tab { background: #334155; color: #cbd5e1; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: 0.2s; white-space: nowrap; }
-.tab:hover { background: #475569; color: white; }
-.tab.active { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3); }
-.tab-close { opacity: 0.5; padding-left: 4px; } .tab-close:hover { opacity: 1; color: #fca5a5; }
+    /* Navbar */
+    .navbar { background: var(--dark); padding: 12px 24px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 50; }
+    .brand { color: white; font-weight: bold; font-size: 1.2rem; margin-right: 20px; white-space: nowrap; display: flex; align-items: center; gap: 8px;}
+    .tab { background: #334155; color: #cbd5e1; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; transition: 0.2s; white-space: nowrap; }
+    .tab:hover { background: #475569; color: white; }
+    .tab.active { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3); }
+    .tab-close { opacity: 0.5; padding-left: 4px; } .tab-close:hover { opacity: 1; color: #fca5a5; }
 
-/* Main Workspace - แบ่ง 2 คอลัมน์ (เครื่องมือ 35% | พื้นที่ทำงาน 65%) */
-.workspace { 
-  display: grid; 
-  grid-template-columns: 35% 1fr; 
-  gap: 24px; 
-  padding: 24px; 
-  height: calc(100vh - 64px); 
-  overflow: hidden; 
-}
+    /* Main Workspace */
+    .workspace { 
+      display: grid; 
+      grid-template-columns: 35% 1fr; 
+      gap: 24px; 
+      padding: 24px; 
+      height: calc(100vh - 64px); 
+      overflow: hidden; 
+    }
 
-/* คอลัมน์ซ้าย (ตรึงไว้) */
-.tools-column { display: flex; flex-direction: column; gap: 16px; height: 100%; overflow-y: auto; padding-right: 8px; }
-/* คอลัมน์ขวา (เลื่อนได้) */
-.content-column { display: flex; flex-direction: column; height: 100%; overflow-y: auto; padding-right: 8px; }
+    /* Columns */
+    .tools-column { display: flex; flex-direction: column; gap: 16px; height: 100%; overflow-y: auto; padding-right: 8px; }
+    .content-column { display: flex; flex-direction: column; height: 100%; overflow-y: auto; padding-right: 8px; }
 
-/* Scrollbar สวยๆ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-/* Panels & Cards */
-.panel { background: var(--card); border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border); display: flex; flex-direction: column;}
-.panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.panel-header h3 { font-size: 1.1rem; color: var(--dark); display: flex; align-items: center; gap: 8px; }
+    /* Panels & Cards */
+    .panel { background: var(--card); border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid var(--border); display: flex; flex-direction: column;}
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .panel-header h3 { font-size: 1.1rem; color: var(--dark); display: flex; align-items: center; gap: 8px; }
 
-/* Inputs & Textareas */
-textarea { flex: 1; width: 100%; resize: none; padding: 14px; border: 2px solid var(--light); background: var(--light); border-radius: 12px; font-size: 14px; outline: none; transition: 0.2s; line-height: 1.6; color: #1e293b; }
-textarea:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-input { padding: 12px 14px; border: 2px solid var(--light); background: var(--light); border-radius: 10px; outline: none; transition: 0.2s; font-size: 14px; }
-input:focus { border-color: var(--primary); background: white; }
+    /* Inputs */
+    textarea { flex: 1; width: 100%; resize: none; padding: 14px; border: 2px solid var(--light); background: var(--light); border-radius: 12px; font-size: 14px; outline: none; transition: 0.2s; line-height: 1.6; color: #1e293b; }
+    textarea:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+    input { padding: 12px 14px; border: 2px solid var(--light); background: var(--light); border-radius: 10px; outline: none; transition: 0.2s; font-size: 14px; }
+    input:focus { border-color: var(--primary); background: white; }
 
-/* Buttons */
-button { padding: 10px 16px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-button:active { transform: scale(0.97); }
-.btn-blue { background: var(--primary); color: white; } .btn-blue:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
-.btn-green { background: var(--success); color: white; } .btn-green:hover { background: var(--success-hover); }
-.btn-orange { background: var(--warning); color: white; } .btn-orange:hover { background: var(--warning-hover); }
-.btn-gray { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; box-shadow: none; } .btn-gray:hover { background: #e2e8f0; color: var(--dark); }
+    /* Buttons */
+    button { padding: 10px 16px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    button:active { transform: scale(0.97); }
+    .btn-blue { background: var(--primary); color: white; } .btn-blue:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+    .btn-green { background: var(--success); color: white; } .btn-green:hover { background: var(--success-hover); }
+    .btn-orange { background: var(--warning); color: white; } .btn-orange:hover { background: var(--warning-hover); }
+    .btn-gray { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; box-shadow: none; } .btn-gray:hover { background: #e2e8f0; color: var(--dark); }
 
-/* Quick Add Glossary Box (ดีไซน์ใหม่) */
-.quick-add-box { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; transition: 0.2s; }
-.quick-add-box:focus-within { border-color: var(--primary); border-style: solid; background: #eff6ff; }
-.input-group { display: flex; gap: 8px; }
-.input-group input { flex: 1; }
+    /* Quick Add Box */
+    .quick-add-box { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; transition: 0.2s; }
+    .quick-add-box:focus-within { border-color: var(--primary); border-style: solid; background: #eff6ff; }
+    .input-group { display: flex; gap: 8px; }
+    .input-group input { flex: 1; }
+    .toolbar { display: flex; gap: 8px; margin-top: 12px; }
 
-.toolbar { display: flex; gap: 8px; margin-top: 12px; }
+    /* Chapter Cards */
+    .chapter-card { border: 1px solid var(--border); border-radius: 16px; padding: 20px; background: white; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);}
+    .chapter-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 12px; align-items: center; color: var(--dark); font-size: 1.1rem;}
+    .chapter-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .chapter-grid textarea { height: 250px; }
+    .mini-glossary-box { background: #fffbeb; border-color: #fde047; }
+    .mini-glossary-box:focus { background: white; border-color: #f59e0b; box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1); }
 
-/* Chapter Cards */
-.chapter-card { border: 1px solid var(--border); border-radius: 16px; padding: 20px; background: white; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);}
-.chapter-header { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 12px; align-items: center; color: var(--dark); font-size: 1.1rem;}
-.chapter-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
-.chapter-grid textarea { height: 250px; }
-.mini-glossary-box { background: #fffbeb; border-color: #fde047; }
-.mini-glossary-box:focus { background: white; border-color: #f59e0b; box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1); }
-
-.drop-zone { border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; text-align: center; color: #64748b; background: white; transition: all 0.2s; margin-bottom: 16px; font-weight: 500; cursor: pointer; }
-.drop-zone:hover { background: #f8fafc; border-color: #64748b; }
-.drop-zone.dragover { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
+    .drop-zone { border: 2px dashed #94a3b8; border-radius: 12px; padding: 20px; text-align: center; color: #64748b; background: white; transition: all 0.2s; margin-bottom: 16px; font-weight: 500; cursor: pointer; }
+    .drop-zone:hover { background: #f8fafc; border-color: #64748b; }
+    .drop-zone.dragover { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
   </style>
+
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
 </head>
 <body>
 
-  <!-- Top Navbar / Tabs -->
   <div class="navbar">
     <div class="brand">🚀 Prompt Locker PRO+</div>
     <div id="tabsContainer" style="display: flex; gap: 8px;"></div>
-    <button class="btn-add-tab" onclick="app.createNewTab()">➕ เพิ่มเรื่องใหม่</button>
+    <button class="btn-add-tab" onclick="app.createNewTab()" style="background: var(--success); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer;">➕ เพิ่มเรื่องใหม่</button>
   </div>
 
-  <!-- Main Workspace -->
-<div class="workspace" id="mainWorkspace">
+  <div class="workspace" id="mainWorkspace">
     
     <div class="tools-column">
       
@@ -105,7 +104,7 @@ button:active { transform: scale(0.97); }
         <div class="panel-header">
           <h3>🔒 Prompt Setting</h3>
         </div>
-        <textarea id="promptBox" style="height: 120px;" placeholder="ใส่ Prompt ของคุณที่นี่..." oninput="app.updateCurrentTab('prompt', this.value)"></textarea>
+        <textarea id="promptBox" style="height: 120px;" placeholder="ใส่ Prompt ของคุณที่นี่..."></textarea>
         <div class="toolbar">
           <button class="btn-gray" onclick="app.cleanPrompt()">🧹 Clean Format</button>
           <button class="btn-blue" onclick="saveDataToCloud('prompt')" style="flex: 1;">💾 บันทึกให้ทีม</button>
@@ -125,7 +124,7 @@ button:active { transform: scale(0.97); }
             <button class="btn-gray" onclick="app.addGlossaryTerm()" style="width: 100%; border: 1px solid var(--border); background: white;">➕ เพิ่มคำศัพท์ (หรือกด Enter)</button>
         </div>
 
-        <textarea id="mainGlossaryBox" placeholder="ตัวอย่าง:\nSnow Soul Ginseng = โสมวิญญาณหิมะ\nGlacier Blossom = บุปผาธารน้ำแข็ง" oninput="app.updateCurrentTab('glossary', this.value)"></textarea>
+        <textarea id="mainGlossaryBox" placeholder="ตัวอย่าง:\nSnow Soul Ginseng = โสมวิญญาณหิมะ\nGlacier Blossom = บุปผาธารน้ำแข็ง"></textarea>
         <div class="toolbar">
           <button class="btn-gray" onclick="app.sortGlossary()">🔤 Sort A-Z</button>
           <button class="btn-blue" onclick="saveDataToCloud('glossary')" style="flex: 1;">💾 บันทึกให้ทีม</button>
@@ -135,7 +134,6 @@ button:active { transform: scale(0.97); }
     </div>
 
     <div class="content-column">
-      
       <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
         <div class="panel-header">
           <h3>📄 เนื้อหา & แปล (Content ชั่วคราว)</h3>
@@ -143,123 +141,119 @@ button:active { transform: scale(0.97); }
         </div>
         
         <div id="dropZone" class="drop-zone">
-          📂 ลากไฟล์ <b>.txt</b> มาวางที่นี่ หรือคลิกเพื่อเพิ่มเนื้อหา
+          📂 ลากไฟล์ <b>.txt</b> มาวางที่นี่ (ลงได้หลายไฟล์เรียงกัน)
         </div>
         
-        <div class="chapters-container" id="chaptersContainer">
-          </div>
+        <div class="chapters-container" id="chaptersContainer"></div>
       </div>
-
     </div>
   </div>
 
 <script>
-const DEFAULT_PROMPT = `คุณคือนักแปลนิยายมืออาชีพที่มีประสบการณ์ทำงานกับสำนักพิมพ์ โปรดแปลเนื้อหาต่อไปนี้โดยอ้างอิงวิธีการแปลและสำนวนที่พบในนิยายแปลของสำนักพิมพ์เท่านั้น
+// ==========================================
+// 2. ตั้งค่าการเชื่อมต่อ Firebase
+// ==========================================
+const firebaseConfig = { 
+    databaseURL: "https://novel-system-v1-default-rtdb.asia-southeast1.firebasedatabase.app/" 
+};
+firebase.initializeApp(firebaseConfig);
+const rtdb = firebase.database();
 
-[กฎการแปล]
-1. จังหวะประโยคอ่านลื่นเหมือนนิยายที่ตีพิมพ์
-2. ใช้ 'ไม่' แทน 'มิ'
-3. หากเจอคำที่อยู่ใน Glossary ให้แปลตามที่กำหนดไว้เท่านั้น
-4. หน่วยวัดโบราณ: ใช้หน่วยจีน 100% เช่น จิน, ลี้, จ้าง, ฉื่อ, หมู่ (ไม่ใช้หน่วยเมตริก)
+const DEFAULT_PROMPT = `คุณคือนักแปลนิยายมืออาชีพที่มีประสบการณ์ทำงานกับสำนักพิมพ์ โปรดแปลเนื้อหาต่อไปนี้โดยอ้างอิงวิธีการแปลและสำนวนที่พบในนิยายแปลของสำนักพิมพ์เท่านั้น\n\n[กฎการแปล]\n1. จังหวะประโยคอ่านลื่นเหมือนนิยายที่ตีพิมพ์\n2. ใช้ 'ไม่' แทน 'มิ'\n3. หากเจอคำที่อยู่ใน Glossary ให้แปลตามที่กำหนดไว้เท่านั้น\n4. หน่วยวัดโบราณ: ใช้หน่วยจีน 100% เช่น จิน, ลี้, จ้าง, ฉื่อ, หมู่ (ไม่ใช้หน่วยเมตริก)\n\n[Glossary เฉพาะตอน]\n{{MINI_GLOSSARY}}\n\n[เนื้อหาต้นฉบับ]\n{{CONTENT}}`;
 
-[Glossary เฉพาะตอน]
-{{MINI_GLOSSARY}}
+// ตัวแปรเก็บ Listener เพื่อป้องกันข้อมูลซ้อนทับกันเวลาสลับ Tab
+let currentPromptListener = null;
+let currentGlossaryListener = null;
 
-[เนื้อหาต้นฉบับ]
-{{CONTENT}}`;
-
-// สถาปัตยกรรมจัดการสถานะ (State Management)
+// ==========================================
+// 3. สถาปัตยกรรมจัดการสถานะ (State Management)
+// ==========================================
 const app = {
   data: {
     activeTabId: null,
-    tabs: []
+    tabs: [] // เก็บแค่ข้อมูลชั่วคราวใน Memory (Chapters)
   },
 
-  // ================= 1. Core / Init =================
+  // เริ่มต้นระบบ: ดึงรายชื่อเรื่องจาก Firebase
   init() {
-    const savedData = localStorage.getItem('promptLockerUltimate');
-    if (savedData) {
-      this.data = JSON.parse(savedData);
-    } 
-    
-    // หากไม่มีข้อมูลเลย ให้สร้าง Tab ค่าเริ่มต้น
-    if (!this.data.tabs || this.data.tabs.length === 0) {
-      const initId = this.generateId();
-      this.data.tabs = [{
-        id: initId,
-        name: "มุ่งสู่มรรคาอมตะ",
-        prompt: DEFAULT_PROMPT,
-        glossary: "仙路 = มรรคาอมตะ\n争锋 = ต่อสู้แย่งชิง\n灵气 = ปราณวิญญาณ",
-        chapters: [{ id: this.generateId(), text: "", miniGlossary: "" }]
-      }];
-      this.data.activeTabId = initId;
-    }
-    
+    rtdb.ref('project_list').on('value', (snapshot) => {
+      const list = snapshot.val();
+
+      // 🚨 ถ้าไม่มีข้อมูลเลยใน Database (เปิดใช้ครั้งแรก) ให้สร้างให้
+      if (!list) {
+        console.log("⚠️ ไม่พบข้อมูล, กำลังสร้างโปรเจกต์เริ่มต้น...");
+        const initId = this.generateId();
+        
+        // สร้างรายชื่อโปรเจกต์
+        rtdb.ref(`project_list/${initId}`).set({ name: "เรื่องเริ่มต้น" });
+        // สร้างข้อมูลพื้นฐานให้โปรเจกต์นั้น
+        rtdb.ref(`projects/${initId}/prompt`).set(DEFAULT_PROMPT);
+        rtdb.ref(`projects/${initId}/glossary`).set("仙路 = มรรคาอมตะ\n争锋 = ต่อสู้แย่งชิง");
+        return; // ออกจากการทำงาน เดี๋ยวมันจะทริกเกอร์ on('value') เองอีกรอบ
+      }
+
+      // ดึง Chapters ที่มีอยู่แล้วใน Memory มาเชื่อมกัน (ป้องกันหายเวลาคนอื่นอัปเดตชื่อเรื่อง)
+      const oldTabs = [...this.data.tabs];
+      
+      this.data.tabs = Object.keys(list).map(id => {
+        const existingTab = oldTabs.find(t => t.id === id);
+        return {
+          id: id,
+          name: list[id].name,
+          // Chapters เป็นแค่ของชั่วคราว ไม่บันทึกขึ้น Cloud
+          chapters: existingTab ? existingTab.chapters : [{ id: this.generateId(), text: "", miniGlossary: "" }],
+          prompt: "", // จะถูกดึงจาก Firebase ในฟังก์ชัน syncWithFirebase
+          glossary: "" // จะถูกดึงจาก Firebase ในฟังก์ชัน syncWithFirebase
+        };
+      });
+
+      // ตั้งค่า Tab เริ่มต้น หากยังไม่ได้เลือก
+      if (!this.data.activeTabId || !this.data.tabs.find(t => t.id === this.data.activeTabId)) {
+        this.data.activeTabId = this.data.tabs[0].id;
+        syncWithFirebase(this.data.activeTabId);
+      }
+
+      this.renderTabs();
+      this.renderChapters();
+    });
+
     this.setupDragAndDrop();
-    this.renderAll();
   },
 
-  save() {
-    localStorage.setItem('promptLockerUltimate', JSON.stringify(this.data));
-  },
+  generateId() { return Math.random().toString(36).substr(2, 9); },
+  getCurrentTab() { return this.data.tabs.find(t => t.id === this.data.activeTabId) || this.data.tabs[0]; },
 
-  generateId() {
-    return Math.random().toString(36).substr(2, 9);
-  },
-
-  getCurrentTab() {
-    return this.data.tabs.find(t => t.id === this.data.activeTabId) || this.data.tabs[0];
-  },
-
-  // ================= 2. Tab Management =================
+  // ================= Tab Management =================
   createNewTab() {
     const name = prompt("ตั้งชื่อเรื่อง (Project Name):", "เรื่องใหม่");
     if (!name) return;
+    const newId = this.generateId();
     
-    const newTab = {
-      id: this.generateId(),
-      name: name,
-      prompt: DEFAULT_PROMPT,
-      glossary: "",
-      chapters: [{ id: this.generateId(), text: "", miniGlossary: "" }]
-    };
+    // บันทึกโปรเจกต์ใหม่ลง Firebase
+    rtdb.ref(`project_list/${newId}`).set({ name: name });
+    rtdb.ref(`projects/${newId}/prompt`).set(DEFAULT_PROMPT);
+    rtdb.ref(`projects/${newId}/glossary`).set("");
     
-    this.data.tabs.push(newTab);
-    this.data.activeTabId = newTab.id;
-    this.save();
-    this.renderAll();
+    this.switchTab(newId);
   },
 
-switchTab(id) {
+  switchTab(id) {
     this.data.activeTabId = id;
-    this.save();
-    this.renderAll();
-    
-    // 🚀 เพิ่มบรรทัดนี้: เมื่อสลับ Tab ให้ไปดึงข้อมูลเรื่องนั้นจาก Firebase มาโชว์
-    syncWithFirebase(id); 
+    this.renderTabs();
+    this.renderChapters();
+    syncWithFirebase(id); // ดึงข้อมูล Prompt/Glossary ของเรื่องนั้นๆ
   },
 
   deleteTab(id, event) {
     event.stopPropagation();
     if (!confirm("⚠️ ต้องการลบเรื่องนี้และข้อมูลทั้งหมดใช่หรือไม่?")) return;
     
-    this.data.tabs = this.data.tabs.filter(t => t.id !== id);
-    if (this.data.tabs.length > 0) {
-      this.data.activeTabId = this.data.tabs[0].id;
-    } else {
-      this.createNewTab(); // บังคับสร้างใหม่ถ้าลบหมด
-    }
-    this.save();
-    this.renderAll();
+    // ลบออกจาก Firebase
+    rtdb.ref(`project_list/${id}`).remove();
+    rtdb.ref(`projects/${id}`).remove();
   },
 
-  updateCurrentTab(field, value) {
-    const tab = this.getCurrentTab();
-    tab[field] = value;
-    this.save();
-  },
-
-  // ================= 3. Glossary & Prompt Utils =================
+  // ================= Glossary & Prompt Utils (Save to Cloud) =================
   addGlossaryTerm() {
     const term = document.getElementById('glosTerm').value.trim();
     const mean = document.getElementById('glosMean').value.trim();
@@ -268,16 +262,19 @@ switchTab(id) {
     const tab = this.getCurrentTab();
     const newEntry = `${term} = ${mean}`;
     
-    if (tab.glossary.includes(term + " =")) {
+    if (tab.glossary && tab.glossary.includes(term + " =")) {
       alert("คำนี้มีอยู่ใน Glossary หลักแล้วครับ");
       return;
     }
     
-    tab.glossary = tab.glossary ? `${tab.glossary}\n${newEntry}` : newEntry;
-    document.getElementById('glosTerm').value = '';
-    document.getElementById('glosMean').value = '';
-    this.save();
-    this.renderWorkspace(); // อัปเดต UI
+    const updatedGlossary = tab.glossary ? `${tab.glossary}\n${newEntry}` : newEntry;
+    
+    // บันทึกตรงขึ้น Firebase เลย (คนอื่นจะได้อัปเดตตามทันที)
+    rtdb.ref(`projects/${this.data.activeTabId}/glossary`).set(updatedGlossary).then(() => {
+        document.getElementById('glosTerm').value = '';
+        document.getElementById('glosMean').value = '';
+        document.getElementById('glosTerm').focus();
+    });
   },
 
   sortGlossary() {
@@ -285,25 +282,22 @@ switchTab(id) {
     if (!tab.glossary) return;
     
     let lines = tab.glossary.split('\n').map(l => l.trim()).filter(l => l);
-    tab.glossary = [...new Set(lines.sort((a,b) => a.localeCompare(b)))].join('\n');
-    this.save();
-    this.renderWorkspace();
+    const sorted = [...new Set(lines.sort((a,b) => a.localeCompare(b)))].join('\n');
+    rtdb.ref(`projects/${this.data.activeTabId}/glossary`).set(sorted);
   },
 
   cleanPrompt() {
     const tab = this.getCurrentTab();
-    tab.prompt = tab.prompt.replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
-    this.save();
-    this.renderWorkspace();
+    if (!tab.prompt) return;
+    const cleaned = tab.prompt.replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+    rtdb.ref(`projects/${this.data.activeTabId}/prompt`).set(cleaned);
   },
 
-  // ================= 4. Chapter Management & Core Logic =================
+  // ================= Chapter Management (Local Memory Only) =================
   addChapter(text = "") {
     const tab = this.getCurrentTab();
     tab.chapters.push({ id: this.generateId(), text: text, miniGlossary: "" });
-    this.save();
     this.renderChapters();
-    // เลื่อนลงไปล่างสุด
     setTimeout(() => {
       const container = document.getElementById('chaptersContainer');
       container.scrollTop = container.scrollHeight;
@@ -314,46 +308,37 @@ switchTab(id) {
     if(!confirm("ต้องการลบเนื้อหาตอนนี้ใช่หรือไม่?")) return;
     const tab = this.getCurrentTab();
     tab.chapters = tab.chapters.filter(c => c.id !== chapterId);
-    if(tab.chapters.length === 0) this.addChapter(); // ห้ามว่างเปล่า
-    this.save();
+    if(tab.chapters.length === 0) this.addChapter(); 
     this.renderChapters();
   },
 
   updateChapterText(chapterId, text) {
     const tab = this.getCurrentTab();
     const chapter = tab.chapters.find(c => c.id === chapterId);
-    if(chapter) {
-      chapter.text = text;
-      this.save();
-    }
+    if(chapter) chapter.text = text;
   },
 
   updateChapterMiniGlossary(chapterId, text) {
     const tab = this.getCurrentTab();
     const chapter = tab.chapters.find(c => c.id === chapterId);
-    if(chapter) {
-      chapter.miniGlossary = text;
-      this.save();
-    }
+    if(chapter) chapter.miniGlossary = text;
   },
 
-  // 🚀 Core Feature 1: สแกนคำศัพท์
-// 🚀 Core Feature 1: สแกนคำศัพท์ (อัปเกรดความแม่นยำ)
+  // 🚀 สแกนคำศัพท์แบบ Case-Insensitive (ยืดหยุ่นขึ้น)
   scanGlossary(chapterId) {
     const tab = this.getCurrentTab();
     const chapter = tab.chapters.find(c => c.id === chapterId);
-    if(!chapter || !chapter.text.trim() || !tab.glossary) return;
+    
+    // ตรวจสอบว่ามี Glossary หรือไม่
+    const currentGlossary = document.getElementById('mainGlossaryBox').value;
+    if(!chapter || !chapter.text.trim() || !currentGlossary) return;
 
     let foundTerms = [];
-    let lines = tab.glossary.split('\n');
-    
-    // เนื้อหาต้นฉบับ
+    let lines = currentGlossary.split('\n');
     const textContent = chapter.text;
 
     lines.forEach(line => {
       if(!line.trim()) return;
-      
-      // ยืดหยุ่นขึ้น: แยกด้วย = (ยังคงบังคับใช้ = เป็นมาตรฐานนะครับ)
       let parts = line.split(/=(.+)/); 
       if(parts.length >= 2) {
         let term = parts[0].trim();
@@ -361,63 +346,41 @@ switchTab(id) {
         
         if(!term) return;
 
-        // --- 🔍 กลไกการแสกนแบบใหม่ ---
-
-        // แบบที่ 1: ค้นหาแบบเป๊ะๆ (ดีที่สุดสำหรับภาษาจีน)
-        let found = textContent.includes(term);
-
-        // แบบที่ 2: ถ้าหาแบบแรกไม่เจอ ให้หาแบบ "ไม่สนตัวพิมพ์เล็ก-ใหญ่" (สำหรับภาษาอังกฤษ)
-        if (!found) {
+        let found = textContent.includes(term); // แบบเป๊ะ (จีน)
+        
+        if (!found) { // แบบไม่เป๊ะ (อังกฤษตัวเล็ก-ใหญ่)
             try {
-                // แปลงคำศัพท์ให้ปลอดภัยสำหรับการทำ Regex
                 const safeTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                // สร้างตัวค้นหาแบบ 'i' (Case-Insensitive)
                 const regex = new RegExp(safeTerm, 'i');
                 found = regex.test(textContent);
-            } catch(e) {
-                console.error("Regex Error:", e);
-            }
+            } catch(e) {}
         }
 
-        if (found) {
-          foundTerms.push(`${term} = ${mean}`);
-        }
+        if (found) foundTerms.push(`${term} = ${mean}`);
       }
     });
 
     chapter.miniGlossary = foundTerms.length > 0 ? foundTerms.join('\n') : "ไม่พบคำศัพท์เฉพาะในตอนนี้";
-    this.save();
-    this.renderChapters();
+    this.renderChapters(); // วาดหน้าจอใหม่โดยไม่เซฟลง Cloud (ชั่วคราว)
   },
 
-  // 🚀 Core Feature 2: ประกอบร่าง Prompt เพื่อ Copy
   copyChapter(chapterId, btnElement) {
     const tab = this.getCurrentTab();
     const chapter = tab.chapters.find(c => c.id === chapterId);
-    if(!chapter || !chapter.text.trim()) {
-      alert("กรุณาใส่เนื้อหาต้นฉบับก่อนครับ");
-      return;
-    }
+    if(!chapter || !chapter.text.trim()) return alert("กรุณาใส่เนื้อหาต้นฉบับก่อนครับ");
 
-    let p = tab.prompt || "";
+    let p = document.getElementById('promptBox').value || "";
     let mg = chapter.miniGlossary || "ไม่มีคำศัพท์เฉพาะในตอนนี้";
     let c = chapter.text;
 
-    // ทำความสะอาดตัวอักษรซ่อนเร้น
     p = p.replace(/\u200B/g,'').replace(/\uFEFF/g,'');
+    let finalOutput = p.replace(/{{\s*MINI_GLOSSARY\s*}}/gi, mg).replace(/{{\s*CONTENT\s*}}/gi, c);
 
-    // แทนที่ Placeholder
-    let finalOutput = p
-      .replace(/{{\s*MINI_GLOSSARY\s*}}/gi, mg)
-      .replace(/{{\s*CONTENT\s*}}/gi, c);
-
-    // Fallback กรณีลืมใส่ Placeholder
     if(!/{{\s*MINI_GLOSSARY\s*}}/i.test(p)) finalOutput += "\n\n[Glossary เฉพาะตอน]\n" + mg;
     if(!/{{\s*CONTENT\s*}}/i.test(p)) finalOutput += "\n\n[เนื้อหาต้นฉบับ]\n" + c;
 
     navigator.clipboard.writeText(finalOutput);
 
-    // Effect เปลี่ยนสีปุ่ม
     const originalText = btnElement.innerHTML;
     btnElement.innerHTML = "✅ คัดลอกแล้ว!";
     btnElement.classList.replace('btn-blue', 'btn-green');
@@ -427,16 +390,10 @@ switchTab(id) {
     }, 2000);
   },
 
-  // ================= 5. Rendering (วาดหน้าจอ) =================
-  renderAll() {
-    this.renderTabs();
-    this.renderWorkspace();
-  },
-
+  // ================= Rendering =================
   renderTabs() {
     const container = document.getElementById('tabsContainer');
     container.innerHTML = '';
-    
     this.data.tabs.forEach(tab => {
       const isActive = tab.id === this.data.activeTabId ? 'active' : '';
       container.innerHTML += `
@@ -448,15 +405,9 @@ switchTab(id) {
     });
   },
 
-  renderWorkspace() {
-    const tab = this.getCurrentTab();
-    document.getElementById('promptBox').value = tab.prompt || "";
-    document.getElementById('mainGlossaryBox').value = tab.glossary || "";
-    this.renderChapters();
-  },
-
   renderChapters() {
     const tab = this.getCurrentTab();
+    if(!tab) return;
     const container = document.getElementById('chaptersContainer');
     container.innerHTML = '';
 
@@ -467,12 +418,10 @@ switchTab(id) {
             <span>ตอนที่ ${index + 1}</span>
             <button class="btn-red" style="padding: 4px 8px; font-size: 11px;" onclick="app.deleteChapter('${chapter.id}')">🗑️ ลบ</button>
           </div>
-          
           <div class="chapter-grid">
             <textarea placeholder="วางเนื้อหาจีน/Eng ที่นี่..." oninput="app.updateChapterText('${chapter.id}', this.value)">${chapter.text}</textarea>
             <textarea class="mini-glossary-box" placeholder="Mini Glossary จะปรากฏที่นี่หลังกดสแกน (สามารถแก้ไขเพิ่มเติมได้)" oninput="app.updateChapterMiniGlossary('${chapter.id}', this.value)">${chapter.miniGlossary}</textarea>
           </div>
-
           <div class="toolbar" style="margin-top:0;">
             <button class="btn-orange" onclick="app.scanGlossary('${chapter.id}')">🔍 1. สแกนคำศัพท์ (สร้าง Mini Glossary)</button>
             <button class="btn-blue" style="flex:1; justify-content:center;" onclick="app.copyChapter('${chapter.id}', this)">📋 2. คัดลอกทั้งหมด (Prompt + Mini Glossary + เนื้อหา)</button>
@@ -482,42 +431,28 @@ switchTab(id) {
     });
   },
 
-  // ================= 6. Drag & Drop =================
+  // ================= Drag & Drop =================
   setupDragAndDrop() {
     const dropZone = document.getElementById('dropZone');
-
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
-
-    dropZone.addEventListener('dragleave', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-    });
-
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); });
     dropZone.addEventListener('drop', (e) => {
       e.preventDefault();
       dropZone.classList.remove('dragover');
-
       const files = Array.from(e.dataTransfer.files).filter(file => file.name.endsWith('.txt'));
       if (files.length === 0) return alert("รองรับเฉพาะไฟล์ .txt เท่านั้นครับ");
 
-      // เรียงไฟล์ตามตัวเลขในชื่อ (เช่น chapter1.txt, chapter2.txt)
       files.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true}));
-
       const tab = this.getCurrentTab();
       
       files.forEach(file => {
         const reader = new FileReader();
         reader.onload = (event) => {
-          // ถ้าช่องแรกว่าง ให้เอาไปแทนที่ช่องแรกก่อน
           if (tab.chapters.length === 1 && tab.chapters[0].text.trim() === "") {
             tab.chapters[0].text = event.target.result;
           } else {
             tab.chapters.push({ id: this.generateId(), text: event.target.result, miniGlossary: "" });
           }
-          this.save();
           this.renderChapters();
         };
         reader.readAsText(file, 'UTF-8');
@@ -526,29 +461,39 @@ switchTab(id) {
   }
 };
 
-// เริ่มการทำงานเมื่อโหลดหน้าเว็บเสร็จ
-window.onload = () => app.init();
-function initFirebaseSync() {
-    // ดึงและฟังข้อมูล Prompt
-    rtdb.ref('project_settings/prompt').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && document.activeElement !== document.getElementById('promptBox')) {
-            document.getElementById('promptBox').value = data;
-            app.updateCurrentTab('prompt', data); // อัปเดตข้อมูลในตัวแปร app
-        }
+// ==========================================
+// 4. Firebase Sync Functions
+// ==========================================
+
+// ฟังก์ชันนี้จะถูกเรียกตอนกดสลับเรื่อง (Tab) 
+function syncWithFirebase(tabId) {
+    if (currentPromptListener) currentPromptListener.off();
+    if (currentGlossaryListener) currentGlossaryListener.off();
+
+    // ฟัง Prompt
+    currentPromptListener = rtdb.ref(`projects/${tabId}/prompt`);
+    currentPromptListener.on('value', (snapshot) => {
+        const data = snapshot.val() || "";
+        const box = document.getElementById('promptBox');
+        // อัปเดตช่องข้อความ ถ้าเราไม่ได้กำลังคลิกพิมพ์อยู่
+        if (document.activeElement !== box) box.value = data;
+        const currentTab = app.getCurrentTab();
+        if (currentTab) currentTab.prompt = data;
     });
 
-    // ดึงและฟังข้อมูล Glossary
-    rtdb.ref('project_settings/glossary').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && document.activeElement !== document.getElementById('mainGlossaryBox')) {
-            document.getElementById('mainGlossaryBox').value = data;
-            app.updateCurrentTab('glossary', data);
-        }
+    // ฟัง Glossary
+    currentGlossaryListener = rtdb.ref(`projects/${tabId}/glossary`);
+    currentGlossaryListener.on('value', (snapshot) => {
+        const data = snapshot.val() || "";
+        const box = document.getElementById('mainGlossaryBox');
+        if (document.activeElement !== box) box.value = data;
+        const currentTab = app.getCurrentTab();
+        if (currentTab) currentTab.glossary = data;
     });
 }
+
+// ฟังก์ชันสำหรับกดปุ่ม "บันทึกให้ทีม"
 function saveDataToCloud(field) {
-    // ดึง ID ของเรื่องที่กำลังเปิดอยู่ปัจจุบัน
     const activeTabId = app.data.activeTabId; 
     if (!activeTabId) return alert("ไม่พบ ID ของเรื่องที่กำลังแก้ไข");
 
@@ -559,116 +504,30 @@ function saveDataToCloud(field) {
     const btn = event.currentTarget;
     const originalText = btn.innerHTML;
     btn.innerHTML = "⌛ กำลังบันทึก...";
-
-    // 🚀 เปลี่ยนกิ่งให้มี ID ของเรื่องนำหน้า
-    rtdb.ref(`projects/${activeTabId}/${field}`).set(value)
-        .then(() => {
-            btn.innerHTML = "✅ บันทึกแยกเรื่องสำเร็จ!";
-            setTimeout(() => { btn.innerHTML = originalText; }, 2000);
-        })
-        .catch(err => alert("บันทึกล้มเหลว: " + err.message));
-}
-  // ตัวแปรเก็บ Listener เดิม เพื่อปิดก่อนเปิดอันใหม่ (ป้องกันข้อมูลตีกัน)
-let currentPromptListener = null;
-let currentGlossaryListener = null;
-
-function syncWithFirebase(tabId) {
-    // 1. ปิดการเชื่อมต่อของเรื่องเก่าก่อน (ถ้ามี)
-    if (currentPromptListener) currentPromptListener.off();
-    if (currentGlossaryListener) currentGlossaryListener.off();
-
-    console.log("🔄 กำลังซิงค์ข้อมูลของเรื่อง ID:", tabId);
-
-    // 2. เริ่มดึงข้อมูลของเรื่องใหม่
-    currentPromptListener = rtdb.ref(`projects/${tabId}/prompt`);
-    currentPromptListener.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && document.activeElement !== document.getElementById('promptBox')) {
-            document.getElementById('promptBox').value = data;
-            app.updateCurrentTab('prompt', data);
-        }
-    });
-
-    currentGlossaryListener = rtdb.ref(`projects/${tabId}/glossary`);
-    currentGlossaryListener.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && document.activeElement !== document.getElementById('mainGlossaryBox')) {
-            document.getElementById('mainGlossaryBox').value = data;
-            app.updateCurrentTab('glossary', data);
-        }
-    });
-}
-</script>
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database-compat.js"></script>
-
-<script>
-// 2. ตั้งค่าการเชื่อมต่อฐานข้อมูลของคุณ
-const firebaseConfig = { 
-    databaseURL: "https://novel-system-v1-default-rtdb.asia-southeast1.firebasedatabase.app/" 
-};
-firebase.initializeApp(firebaseConfig);
-const rtdb = firebase.database();
-
-// 3. ฟังก์ชันดึงข้อมูลแบบ Real-time (ใครบันทึกปุ๊บ ทุกคนอัปเดตปั๊บ)
-function initFirebaseSync() {
-    rtdb.ref('project_settings/prompt').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && document.activeElement !== document.getElementById('promptBox')) {
-            document.getElementById('promptBox').value = data;
-            app.updateCurrentTab('prompt', data);
-        }
-    });
-
-    rtdb.ref('project_settings/glossary').on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && document.activeElement !== document.getElementById('mainGlossaryBox')) {
-            document.getElementById('mainGlossaryBox').value = data;
-            app.updateCurrentTab('glossary', data);
-        }
-    });
-}
-
-// 4. ฟังก์ชันสำหรับปุ่ม "บันทึก" ของเรา
-function saveDataToCloud(field) {
-    const value = (field === 'prompt') 
-        ? document.getElementById('promptBox').value 
-        : document.getElementById('mainGlossaryBox').value;
-
-    const btn = event.currentTarget;
-    const originalText = btn.innerHTML;
-    btn.innerHTML = "⌛ กำลังบันทึก...";
     btn.disabled = true;
 
-    // สั่งบันทึกข้อมูลทับกิ่งเดิม
-    rtdb.ref(`project_settings/${field}`).set(value)
+    rtdb.ref(`projects/${activeTabId}/${field}`).set(value)
         .then(() => {
-            btn.innerHTML = "✅ บันทึกให้ทีมแล้ว!";
-            btn.style.background = "var(--success)"; // เปลี่ยนเป็นสีเขียว
+            btn.innerHTML = "✅ บันทึกสำเร็จ!";
+            btn.style.background = "var(--success)"; // เปลี่ยนปุ่มเป็นสีเขียว
             setTimeout(() => { 
                 btn.innerHTML = originalText; 
-                btn.style.background = "var(--primary)"; // กลับเป็นสีน้ำเงิน
+                btn.style.background = ""; // เอาสีเขียวออก คืนค่าสีเดิม
                 btn.disabled = false;
             }, 2000);
         })
-        .catch(err => {
-            alert("บันทึกล้มเหลว: " + err.message);
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        });
+        .catch(err => alert("บันทึกล้มเหลว: " + err.message));
 }
-// ฟังก์ชันตรวจจับปุ่ม Enter สำหรับช่องเพิ่มคำศัพท์
+
 function handleGlossaryEnter(event) {
     if (event.key === "Enter") {
-        event.preventDefault(); // ป้องกันการ Refresh
-        app.addGlossaryTerm(); // เรียกใช้ฟังก์ชันเพิ่มคำศัพท์เดิมของคุณ
-        document.getElementById('glosTerm').focus(); // เด้ง Cursor กลับไปช่องแรกเพื่อพิมพ์คำต่อไปได้ทันที
+        event.preventDefault();
+        app.addGlossaryTerm();
     }
 }
-// 5. สั่งให้ฟังก์ชันเริ่มทำงานเมื่อโหลดหน้าจอเสร็จ
-window.addEventListener('load', () => {
-    initFirebaseSync();
-});
+
+// เริ่มต้นระบบเมื่อเปิดหน้าเว็บ
+window.addEventListener('load', () => { app.init(); });
 </script>
 </body>
 </html>
